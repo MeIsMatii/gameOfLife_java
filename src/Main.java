@@ -33,8 +33,8 @@ void createWindow() {
 
 void addCells() {
     this.grid = new JPanel();
-    int rows = 20;
-    int cols = 20;
+    int rows = 40;
+    int cols = 40;
 
     cells = new Cell[rows][cols];
 
@@ -60,7 +60,7 @@ private void addListener() {
         public void keyPressed(KeyEvent e) {
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-                System.out.printf("Space down -> isPaused: %s\n", isPaused);
+                System.out.printf("Space down -> isPaused: %s.\n", isPaused);
                 isPaused = !isPaused;
                 pauseCells(isPaused);
 
@@ -71,7 +71,10 @@ private void addListener() {
                 }
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT && isPaused) {
                 tick(cells);
-                System.out.println("manual tick +1");
+                System.out.println("manual tick +1.");
+            } else if(e.getKeyCode() == KeyEvent.VK_C && isPaused) {
+                clearCells();
+                System.out.println("cleared all cells.");
             }
 
         }
@@ -87,6 +90,13 @@ void addTimer() {
     timer = new Timer(100, e -> {
         tick(cells);
     });
+}
+void clearCells() {
+    for(Cell[] row : cells) {
+        for(Cell cell : row) {
+            cell.setAlive(false);
+        }
+    }
 }
 void pauseCells(boolean isPaused) {
     for(Cell[] row : cells) {

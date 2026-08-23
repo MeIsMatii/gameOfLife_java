@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -24,17 +25,43 @@ public class Cell extends JPanel {
     public Cell() {
         setPreferredSize(new Dimension(60,60));
 
-        addMouseListener(new MouseAdapter() {
+        MouseAdapter adapter = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 super.mouseClicked(e);
                 if(!isModifiable) {
                     return;
                 }
-                isAlive = !isAlive;
+                boolean isLeftPressed = (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
+                boolean isRightPressed = (e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0;
+
+                if(isLeftPressed) {
+                    isAlive = true;
+                } if (isRightPressed) {
+                    isAlive = false;
+                }
                 repaint();
             }
-        });
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                if(!isModifiable) {
+                    return;
+                }
+                boolean isLeftPressed = (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
+                boolean isRightPressed = (e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0;
+                if (isLeftPressed) {
+                    isAlive = true;
+                    repaint();
+                } else if(isRightPressed) {
+                    isAlive = false;
+                    repaint();
+                }
+            }
+        };
+        addMouseListener(adapter);
+        addMouseMotionListener(adapter);
     }
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
