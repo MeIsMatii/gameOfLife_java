@@ -9,7 +9,7 @@ private JFrame window;
 private JPanel grid;
 private Cell[][] cells;
 
-private boolean isPaused = false;
+private boolean isPaused = true;
 
 private Timer timer;
 
@@ -60,7 +60,7 @@ private void addListener() {
         public void keyPressed(KeyEvent e) {
 
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-                System.out.println("Space down");
+                System.out.printf("Space down -> isPaused: %s\n", isPaused);
                 isPaused = !isPaused;
                 pauseCells(isPaused);
 
@@ -69,6 +69,9 @@ private void addListener() {
                 } else {
                     timer.start();
                 }
+            } else if(e.getKeyCode() == KeyEvent.VK_RIGHT && isPaused) {
+                tick(cells);
+                System.out.println("manual tick +1");
             }
 
         }
@@ -94,7 +97,6 @@ void pauseCells(boolean isPaused) {
 }
 
 void tick(Cell[][] cells) {
-    System.out.println("tick");
     boolean[][] nextState = new boolean[cells.length][cells[0].length];
 
     for(int row = 0; row<cells.length; row++) {
