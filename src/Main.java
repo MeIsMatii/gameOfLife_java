@@ -124,13 +124,21 @@ boolean calculate(int row, int col, Cell[][] cells) {
             int neighbourCol = col + colOffset;
 
             //neighbour needs to be inside grid
-            if (neighbourRow >= 0 && neighbourRow < cells.length &&
-                    neighbourCol >= 0 && neighbourCol < cells[neighbourRow].length) {
-
-                if (cells[neighbourRow][neighbourCol].isAlive()) {
-                    aliveNeighbours++;
-                }
+            if (neighbourRow < 0) {
+                neighbourRow = cells.length + neighbourRow;
+            } else if(neighbourRow >= cells.length) {
+                neighbourRow = neighbourRow - cells.length;
             }
+            if (neighbourCol < 0) {
+                neighbourCol = cells.length + neighbourCol;
+            } else if(neighbourCol >= cells.length) {
+                neighbourCol = neighbourCol - cells.length;
+            }
+
+            if (cells[neighbourRow][neighbourCol].isAlive()) {
+                aliveNeighbours++;
+            }
+
         }
     }
     boolean isAlive;
