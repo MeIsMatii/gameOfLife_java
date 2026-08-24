@@ -13,7 +13,6 @@ private boolean isPaused = true;
 
 private Timer timer;
 
-private int tick = 0;
 
 void main() {
     createWindow();
